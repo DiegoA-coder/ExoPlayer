@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">ExoPlayer</string>
     <string name="content_url"><![CDATA[https://ice55.securenetsystems.net/DASH27]]></string>
-    <string name="ad_tag_url"><![CDATA[https://pubads.g.doubleclick.net/gampad/ads?iu=/21775744923/external/single_preroll_skippable&sz=640x480&ciu_szs=300x250%2C728x90&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&impl=s&correlator=]]></string>
+    <string name="ad_tag_url"><![CDATA[https://pubads.g.doubleclick.net/gampad/ads?iu=/29782907/Super-App/Podcast&description_url=https%3A%2F%2Fwww.baz.app&tfcd=0&npa=0&ad_type=audio&sz=1x1&gdfp_req=1&output=vast&unviewed_position_start=1&env=vp&nofb=1&vpmute=0&vpa=click&url=https%3A%2F%2Fwww.baz.app&an=Baz+Super+App&correlator=]]></string>
 </resources>
