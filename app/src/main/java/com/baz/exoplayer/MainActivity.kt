@@ -3,6 +3,7 @@ package com.baz.exoplayer
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.ads.interactivemedia.v3.api.AdEvent
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -26,8 +27,10 @@ class MainActivity : AppCompatActivity() {
     //Ads
     private val imaAdsLoader: ImaAdsLoader? = null
 
-    //PlayList
-    val contentUri = Uri.parse("https://ice55.securenetsystems.net/DASH27")
+    //PlayList (https required and m3u extension is not required)
+    val dash34 = "https://ice55.securenetsystems.net/DASH34"
+    val dash27 = "https://ice55.securenetsystems.net/DASH27"
+    val contentUri = Uri.parse(dash34)
 
     //Ads
     val adTagUri =
@@ -42,7 +45,9 @@ class MainActivity : AppCompatActivity() {
         var playerView = findViewById<PlayerView>(R.id.player_view)
         playerView.player = exoplayer
 
-        //val imaAdsLoader = ImaAdsLoader(this, Uri.parse(adTagUri)) )
+        //val imaAdsLoader = ImaAdsLoader(this, Uri.parse(adTagUri))
+        val imaAdsLoader = ImaAdsLoader.Builder(this).buildForAdTag(Uri.parse(adTagUri))
+        //val imaAdsLoader = ImaAdsLoader.Builder(this).setAdEventListener { if (it.type == AdEvent.AdEventType.ALL_ADS_COMPLETED) imaAdsLoader?.release() }.buildForAdTag(Uri.parse(adTagUri))
 
         val dataSource = DefaultHttpDataSourceFactory(
             Util.getUserAgent(this, "ExoPlayer")
