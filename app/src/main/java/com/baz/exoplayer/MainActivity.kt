@@ -3,10 +3,12 @@ package com.baz.exoplayer
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.ads.interactivemedia.v3.api.AdEvent
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader
 import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ads.AdsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
@@ -37,18 +39,18 @@ class MainActivity : AppCompatActivity() {
 
         var exoplayer = ExoPlayerFactory.newSimpleInstance(this, DefaultTrackSelector())
         var playerView = findViewById<PlayerView>(R.id.player_view)
-        playerView.player = exoplayer
 
-        //val imaAdsLoader = ImaAdsLoader(this, Uri.parse(adTagUri))
         val imaAdsLoader = ImaAdsLoader.Builder(this).buildForAdTag(Uri.parse(adTagUri))
-        //val imaAdsLoader = ImaAdsLoader.Builder(this).setAdEventListener { if (it.type == AdEvent.AdEventType.ALL_ADS_COMPLETED) imaAdsLoader?.release() }.buildForAdTag(Uri.parse(adTagUri))
-
         val dataSource = DefaultHttpDataSourceFactory(
             Util.getUserAgent(this, "ExoPlayer")
         )
         val mediaSource = ExtractorMediaSource.Factory(dataSource).createMediaSource(contentUri)
-        exoplayer.prepare(mediaSource)
+        val adMediaSource: MediaSource = AdsMediaSource(mediaSource, dataSource, imaAdsLoader, playerView)
+        playerView.player = exoplayer
+        imaAdsLoader.setPlayer(exoplayer)
+
         exoplayer.playWhenReady = true
-        //val adsMediaSource = AdsMediaSource(hlsMediaSource, dataSourceFactory, imaAdsLoader, playerView)
+        exoplayer.prepare(mediaSource)
+        //exoplayer.prepare(adMediaSource, false, false)
     }
 }
