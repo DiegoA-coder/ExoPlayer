@@ -3,7 +3,6 @@ package com.baz.exoplayer
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.ads.interactivemedia.v3.api.AdEvent
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -28,9 +27,8 @@ class MainActivity : AppCompatActivity() {
     private val imaAdsLoader: ImaAdsLoader? = null
 
     //PlayList (https required and m3u extension is not required)
-    val dash34 = "https://ice55.securenetsystems.net/DASH34"
     val dash27 = "https://ice55.securenetsystems.net/DASH27"
-    val contentUri = Uri.parse(dash34)
+    val contentUri = Uri.parse(dash27)
 
     //Ads
     val adTagUri =
