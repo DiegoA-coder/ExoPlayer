@@ -3,17 +3,15 @@ package com.baz.exoplayer
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.exoplayer2.C
+import com.google.ads.interactivemedia.v3.api.AdEvent
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader
 import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.dash.DashMediaSource
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ads.AdsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 
@@ -26,8 +24,9 @@ class MainActivity : AppCompatActivity() {
     //Ads
     private val imaAdsLoader: ImaAdsLoader? = null
 
-    //PlayList
-    val contentUri = Uri.parse("https://ice55.securenetsystems.net/DASH27")
+    //PlayList (https required and m3u extension is not required)
+    val dash27 = "https://ice55.securenetsystems.net/DASH27"
+    val contentUri = Uri.parse(dash27)
 
     //Ads
     val adTagUri =
@@ -40,20 +39,18 @@ class MainActivity : AppCompatActivity() {
 
         var exoplayer = ExoPlayerFactory.newSimpleInstance(this, DefaultTrackSelector())
         var playerView = findViewById<PlayerView>(R.id.player_view)
-        playerView.player = exoplayer
 
-        //val imaAdsLoader = ImaAdsLoader(this, Uri.parse(adTagUri)) )
-
+        val imaAdsLoader = ImaAdsLoader.Builder(this).buildForAdTag(Uri.parse(adTagUri))
         val dataSource = DefaultHttpDataSourceFactory(
             Util.getUserAgent(this, "ExoPlayer")
         )
-        val mediaSource = ExtractorMediaSource.Factory(dataSource)
-            .createMediaSource(contentUri, null, null)
-        exoplayer.setPlayWhenReady(true)
+        val mediaSource = ExtractorMediaSource.Factory(dataSource).createMediaSource(contentUri)
+        val adMediaSource: MediaSource = AdsMediaSource(mediaSource, dataSource, imaAdsLoader, playerView)
+        playerView.player = exoplayer
+        imaAdsLoader.setPlayer(exoplayer)
 
-        //val adsMediaSource = AdsMediaSource(hlsMediaSource, dataSourceFactory, imaAdsLoader, playerView)
-
-        exoplayer?.prepare(mediaSource)
-        exoplayer?.setPlayWhenReady(true)
+        exoplayer.playWhenReady = true
+        exoplayer.prepare(mediaSource)
+        //exoplayer.prepare(adMediaSource, false, false)
     }
 }
