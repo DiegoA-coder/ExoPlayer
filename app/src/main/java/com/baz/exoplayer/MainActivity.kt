@@ -3,17 +3,13 @@ package com.baz.exoplayer
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.ima.ImaAdsLoader
 import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.dash.DashMediaSource
-import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.source.ads.AdsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 
@@ -50,13 +46,9 @@ class MainActivity : AppCompatActivity() {
         val dataSource = DefaultHttpDataSourceFactory(
             Util.getUserAgent(this, "ExoPlayer")
         )
-        val mediaSource = ExtractorMediaSource.Factory(dataSource)
-            .createMediaSource(contentUri, null, null)
-        exoplayer.setPlayWhenReady(true)
-
+        val mediaSource = ExtractorMediaSource.Factory(dataSource).createMediaSource(contentUri)
+        exoplayer.prepare(mediaSource)
+        exoplayer.playWhenReady = true
         //val adsMediaSource = AdsMediaSource(hlsMediaSource, dataSourceFactory, imaAdsLoader, playerView)
-
-        exoplayer?.prepare(mediaSource)
-        exoplayer?.setPlayWhenReady(true)
     }
 }
